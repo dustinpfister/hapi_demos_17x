@@ -23,7 +23,7 @@ let init = async() => {
         method: 'GET',
         path: '/',
         handler: (request, h) => {
-            return h.view('index.pug');
+            return h.view('index.pug', {mess:'foobar'});
         }
     });
 

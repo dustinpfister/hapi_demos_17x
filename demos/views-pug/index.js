@@ -11,7 +11,7 @@ let init = async() => {
 
     server.views({
         engines: {
-            html: require('pug')
+            pug: require('pug')
         },
         relativeTo: __dirname,
         path: 'views'
@@ -22,7 +22,8 @@ let init = async() => {
         path: '/',
         handler: (request, h) => {
 
-            return 'Hello World!';
+            //return 'Hello World!';
+            return h.view('index.pug');
         }
     });
 

@@ -9,6 +9,7 @@ let init = async() => {
 
     await server.register(require('@hapi/vision'));
 
+    // set up pug as a view engine
     server.views({
         engines: {
             pug: require('pug')
@@ -17,6 +18,7 @@ let init = async() => {
         path: 'views'
     });
 
+    // use pug
     server.route({
         method: 'GET',
         path: '/',

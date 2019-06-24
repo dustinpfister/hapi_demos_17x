@@ -9,6 +9,7 @@
   "author": "Dustin Pfister",
   "license": "GPL-3.0",
   "dependencies": {
-    "@hapi/hapi": "^17.9.0"
+    "@hapi/hapi": "^17.9.0",
+    "pug": "^2.0.4"
   }
 }

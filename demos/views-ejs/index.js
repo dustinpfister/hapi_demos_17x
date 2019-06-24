@@ -1,15 +1,25 @@
 let Hapi = require('@hapi/hapi');
 
-let init = async () => {
+let init = async() => {
 
     let server = Hapi.server({
-        port: 3000,
-        host: 'localhost'
+            port: 3000,
+            host: 'localhost'
+        });
+
+    await server.register(require('@hapi/vision'));
+
+    server.views({
+        engines: {
+            html: require('pug')
+        },
+        relativeTo: __dirname,
+        path: 'views'
     });
 
     server.route({
         method: 'GET',
-        path:'/',
+        path: '/',
         handler: (request, h) => {
 
             return 'Hello World!';

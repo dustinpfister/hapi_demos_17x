@@ -1,5 +1,3 @@
-let Hapi = require('@hapi/hapi');
-// a very basic plugin
 exports.pluginRoot = {
     name: 'pluginRoot',
     register: async function (server, options) {

@@ -1,8 +1,7 @@
 let Hapi = require('@hapi/hapi');
 
 let pluginRoot = {
-    name: 'myPlugin',
-    version: '1.0.0',
+    name: 'pluginRoot',
     register: async function (server, options) {
         server.route({
             method: 'GET',

@@ -36,7 +36,8 @@ let init = async() => {
         method: 'GET',
         path: '/{year}/{month}',
         handler: async function (request, h) {
-            let days = await readdir(path.join(dir_posts, request.params.year, request.params.month));
+            let p = request.params;
+            let days = await readdir(path.join(dir_posts, p.year, p.month));
             return days;
         }
     });
@@ -44,7 +45,8 @@ let init = async() => {
         method: 'GET',
         path: '/{year}/{month}/{day}',
         handler: async function (request, h) {
-            let posts = await readdir(path.join(dir_posts, request.params.year, request.params.month, request.params.day));
+            let p = request.params;
+            let posts = await readdir(path.join(dir_posts, p.year, p.month, p.day));
             return posts;
         }
     });
@@ -52,7 +54,8 @@ let init = async() => {
         method: 'GET',
         path: '/{year}/{month}/{day}/{post}',
         handler: async function (request, h) {
-            file = await readFile(path.join(dir_posts, request.params.year, request.params.month, request.params.day, request.params.post),'utf8');
+            let p = request.params;
+            file = await readFile(path.join(dir_posts, p.year, p.month, p.day, p.post), 'utf8');
             return file;
         }
     });

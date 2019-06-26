@@ -28,8 +28,7 @@ let init = async() => {
         method: 'GET',
         path: '/{year}',
         handler: async function (request, h) {
-            let year = encodeURIComponent(request.params.year);
-            let months = await readdir(path.join(dir_posts, year));
+            let months = await readdir(path.join(dir_posts, request.params.year));
             return months;
         }
     });
@@ -37,9 +36,7 @@ let init = async() => {
         method: 'GET',
         path: '/{year}/{month}',
         handler: async function (request, h) {
-            let year = encodeURIComponent(request.params.year);
-            let month = encodeURIComponent(request.params.month);
-            let days = await readdir(path.join(dir_posts, year, month));
+            let days = await readdir(path.join(dir_posts, request.params.year, request.params.month));
             return days;
         }
     });
@@ -47,10 +44,7 @@ let init = async() => {
         method: 'GET',
         path: '/{year}/{month}/{day}',
         handler: async function (request, h) {
-            let year = encodeURIComponent(request.params.year);
-            let month = encodeURIComponent(request.params.month);
-            let day = encodeURIComponent(request.params.day);
-            let posts = await readdir(path.join(dir_posts, year, month, day));
+            let posts = await readdir(path.join(dir_posts, request.params.year, request.params.month, request.params.day));
             return posts;
         }
     });
@@ -58,11 +52,7 @@ let init = async() => {
         method: 'GET',
         path: '/{year}/{month}/{day}/{post}',
         handler: async function (request, h) {
-            let year = encodeURIComponent(request.params.year);
-            let month = encodeURIComponent(request.params.month);
-            let day = encodeURIComponent(request.params.day);
-            let post = encodeURIComponent(request.params.post);
-            file = await readFile(path.join(dir_posts, year, month, day, post),'utf8');
+            file = await readFile(path.join(dir_posts, request.params.year, request.params.month, request.params.day, request.params.post),'utf8');
             return file;
         }
     });

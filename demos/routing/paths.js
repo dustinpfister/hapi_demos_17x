@@ -5,6 +5,7 @@ util = require('util'),
 dir_posts = path.resolve('./posts');
 
 let readdir = util.promisify(fs.readdir);
+let readFile = util.promisify(fs.readFile);
 
 let init = async() => {
     let server = Hapi.server({
@@ -12,6 +13,7 @@ let init = async() => {
             host: 'localhost'
         });
 
+    // a path can just be a string
     server.route({
         method: 'GET',
         path: '/',
@@ -21,6 +23,7 @@ let init = async() => {
         }
     });
 
+    // you can aso have params as well in the string
     server.route({
         method: 'GET',
         path: '/{year}',
@@ -28,6 +31,39 @@ let init = async() => {
             let year = encodeURIComponent(request.params.year);
             let months = await readdir(path.join(dir_posts, year));
             return months;
+        }
+    });
+    server.route({
+        method: 'GET',
+        path: '/{year}/{month}',
+        handler: async function (request, h) {
+            let year = encodeURIComponent(request.params.year);
+            let month = encodeURIComponent(request.params.month);
+            let days = await readdir(path.join(dir_posts, year, month));
+            return days;
+        }
+    });
+    server.route({
+        method: 'GET',
+        path: '/{year}/{month}/{day}',
+        handler: async function (request, h) {
+            let year = encodeURIComponent(request.params.year);
+            let month = encodeURIComponent(request.params.month);
+            let day = encodeURIComponent(request.params.day);
+            let posts = await readdir(path.join(dir_posts, year, month, day));
+            return posts;
+        }
+    });
+    server.route({
+        method: 'GET',
+        path: '/{year}/{month}/{day}/{post}',
+        handler: async function (request, h) {
+            let year = encodeURIComponent(request.params.year);
+            let month = encodeURIComponent(request.params.month);
+            let day = encodeURIComponent(request.params.day);
+            let post = encodeURIComponent(request.params.post);
+            file = await readFile(path.join(dir_posts, year, month, day, post),'utf8');
+            return file;
         }
     });
 

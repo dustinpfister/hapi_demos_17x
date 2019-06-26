@@ -12,7 +12,7 @@ let init = async() => {
         // a handler can just return a static
         // string
         handler: function (request, h) {
-            return '<a href=\"/rresponse\">response</a>';
+            return '<a href=\"/response\">response</a>';
         }
     });
 
@@ -22,7 +22,7 @@ let init = async() => {
         // Another options is the h.response
         // response toolkit method
         handler: function (request, h) {
-            response = h.response({
+            let response = h.response({
                     foo: 'bar'
                 });
             response.type('application/json');

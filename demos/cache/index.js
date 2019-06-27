@@ -18,7 +18,11 @@ let init = async() => {
         method: 'GET',
         path: '/',
         handler: (request, h) => {
-            return h.view('index.ejs');
+            let res = h.view('index.ejs', {
+                    rendered: new Date()
+                });
+            console.log(res)
+            return res;
         }
     });
     await server.start();

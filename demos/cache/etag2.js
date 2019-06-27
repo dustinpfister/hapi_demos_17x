@@ -1,4 +1,8 @@
-let Hapi = require('@hapi/hapi');
+let Hapi = require('@hapi/hapi'),
+fs = require('fs'),
+readdir = require('util').promisify(fs.readdir),
+dir_folders = process.argv[2] || process.cwd(),
+delay = process.argv[3] || 30000;
 let init = async() => {
 
     let server = Hapi.server({
@@ -9,6 +13,11 @@ let init = async() => {
     // etag based on the time the server started
     let startTime = new Date(),
     etag_server = String(startTime.getTime());
+
+    setInterval(() => {
+        startTime = new Date(),
+        etag_server = String(startTime.getTime());
+    }, delay);
 
     server.route({
         method: 'GET',
@@ -29,11 +38,23 @@ let init = async() => {
                 console.log('request for fresh resource');
                 return {};
             } else {
-                console.log('old cached copy sending the new stuff...');
+                console.log('old cached copy getting the new stuff...');
+
+                return readdir(dir_folders).then((contents) => {
+
+                    return {
+                        date: new Date(),
+                        contents: contents
+                    }
+
+                })
+
+                /*
                 return {
-                    mess: 'date should only change each time the sever starts',
-                    date: new Date()
+                mess: 'date should only change each time the sever starts',
+                date: new Date()
                 };
+                 */
 
             }
         }

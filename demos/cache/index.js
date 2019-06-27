@@ -4,25 +4,19 @@ let init = async() => {
             port: 3000,
             host: 'localhost'
         });
-    await server.register(require('@hapi/vision'));
-    // set up pug as a view engine
-    server.views({
-        engines: {
-            ejs: require('ejs')
-        },
-        relativeTo: __dirname,
-        path: 'views'
-    });
-    // use pug
+
+    let startTime = new Date();
     server.route({
         method: 'GET',
         path: '/',
         handler: (request, h) => {
-            let res = h.view('index.ejs', {
-                    rendered: new Date()
-                });
-            console.log(res)
-            return res;
+            h.entity({
+                etag: startTime.getTime()
+            });
+            return {
+                mess: 'date should only change each time the sever starts',
+                date: new Date()
+            };
         }
     });
     await server.start();

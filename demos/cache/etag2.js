@@ -22,19 +22,20 @@ let init = async() => {
     }
         ());
 
+    // first etag
     let etag_server = genEtag();
-
     // update etag each delay
     setInterval(() => {
         etag_server = genEtag();
     }, delay);
 
+    // set up the route
     server.route({
         method: 'GET',
         path: '/',
         handler: (request, h) => {
 
-            // using etag
+            // using etag_server for each request
             h.entity({
                 etag: etag_server
             });
@@ -43,33 +44,25 @@ let init = async() => {
             let etag_client = request.headers['if-none-match'];
             etag_client = etag_client === undefined ? 0 : etag_client.replace(/"/g, '');
 
-            // send response based on etag
+            // send response based on client etag
+            // compared to server etag
             if (etag_client === etag_server) {
                 console.log('request for fresh resource');
                 return {};
             } else {
                 console.log('old cached copy getting the new stuff...');
-
                 return readdir(dir_folders).then((contents) => {
-
                     return {
                         date: new Date(),
                         etag_server: etag_server,
                         contents: contents
                     }
-
                 })
-
-                /*
-                return {
-                mess: 'date should only change each time the sever starts',
-                date: new Date()
-                };
-                 */
-
             }
+
         }
     });
+
     await server.start();
     console.log('Server running on %s', server.info.uri);
 };
